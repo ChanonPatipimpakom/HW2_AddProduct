@@ -39,7 +39,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="index.php?menu=com">Computer</a></li>
                         <li><a href="index.php?menu=food">Food</a></li>
-                        <li><a href="index.php?menu=cloth">Cloth</a></li>
+                        <li><a href="index.php?menu=cloth">Clothes</a></li>
                     </ul>
                 </li>
             </ul>
