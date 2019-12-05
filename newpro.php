@@ -104,7 +104,7 @@
                 <div class="col-md-9">
                     <input type="radio" name="rdoType" value="com" checked required> Computer</label>
                     <input type="radio" name="rdoType" value="food"> Food</label>
-                    <input type="radio" name="rdoType" value="cloth"> Clothes</label>
+                    <input type="radio" name="rdoType" value="cloth"> Clothess</label>
                 </div>
             </div>
             <div class="form-group">
