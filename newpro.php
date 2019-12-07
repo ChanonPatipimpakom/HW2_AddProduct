@@ -66,7 +66,6 @@
     </div>
 </nav>
 <div class="container">
-    <?php include("conproduct.php");?>
     <div class="row">
         <form action="savepro.php" class="form-horizontal" method="post" enctype="multipart/form-data">
             <div class="form-group">
@@ -102,9 +101,9 @@
             <div class="form-group">
                 <label for="picture" class="control-label col-md-3">Picture: </label>
                 <div class="col-md-9">
-                    <input type="radio" name="rdoType" value="com" checked required> Computer</label>
-                    <input type="radio" name="rdoType" value="food"> Food</label>
-                    <input type="radio" name="rdoType" value="cloth"> Clothes</label>
+                    <input type="radio" name="rdoType" value="1" checked required> Computer</label>
+                    <input type="radio" name="rdoType" value="2"> Food</label>
+                    <input type="radio" name="rdoType" value="3"> Clothes</label>
                 </div>
             </div>
             <div class="form-group">

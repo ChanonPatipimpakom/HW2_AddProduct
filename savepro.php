@@ -1,5 +1,5 @@
 <?php
-    include("conproduct.php");
+    include("connect.php");
     //echo ini_get("upload_max_filesize")."<br>";
     $allowType=["jpg","jpeg","gif","png","tif","tiff"];
     $fileType=explode("/",$_FILES["filePic"]["type"]);
@@ -18,6 +18,7 @@
         $price = $_POST['txtPrice'];
         $unitInStock = $_POST['txtStock'];
         $filename = $_FILES["filePic"]["name"];
+        $tcategory = $_POST["rdoType"];
         /*echo "Name: ".$_FILES["filePic"]["name"] . "<br>";
         echo "Size: ".$_FILES["filePic"]["size"] . "<br>";
         echo "Temp name: ".$_FILES["filePic"]["tmp_name"] . "<br>";
@@ -25,33 +26,7 @@
 
         move_uploaded_file($_FILES["filePic"]["tmp_name"],"image/".$_FILES["filePic"]["name"]);
 
-            if(isset($_POST['rdoType'])){
-                $menu = $_POST['rdoType'];
-            }
-            else{
-                $menu="";
-            }
-            switch($menu){
-                case "com":{
-                    $page = "product";
-                    //echo $page;
-                    break;
-                }
-                case "food":{
-                    $page = "product2";
-                    //echo $page;
-                    break;
-                }
-                case "cloth":{
-                    $page = "product3";
-                    //echo $page;
-                    break;
-                }
-                default:{
-                    $page = "product";
-                }
-            }
-        $sqlInsert = "INSERT INTO $page (name,description,price,unitInStock,picture) VALUE('$name', '$desc', '$price', '$unitInStock', '$filename')";
+        $sqlInsert = "INSERT INTO product (name,description,price,unitInStock,picture,category) VALUE('$name', '$desc', '$price', '$unitInStock', '$filename', '$tcategory')";
 
         //echo $sqlInsert;
         $result = $conn->query($sqlInsert);

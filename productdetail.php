@@ -67,32 +67,13 @@
 </nav>
 <div class="container">
 <?php
-    include("conproduct.php");
     if(isset($_GET['pid'])){
         $pid = $_GET['pid'];
     }
     else{
         header("location:index.php");
     }
-    $menu = $_GET['category'];
-    switch($menu){
-        case "com":{
-            $page = "product";
-            break;
-        }
-        case "food":{
-            $page = "product2";
-            break;
-        }
-        case "cloth":{
-            $page = "product3";
-            break;
-        }
-        default:{
-            $page = "product";
-        }
-    }
-    $sql = "SELECT * FROM $page WHERE id=$pid";
+    $sql = "SELECT * FROM product WHERE id=$pid";
     $result = $conn->query($sql);
     if(!$result){
         echo "Error ".$conn->error;

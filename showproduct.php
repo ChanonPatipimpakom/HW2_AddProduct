@@ -89,7 +89,13 @@
 <div class="container">
     <div class="row">
         <?php
-        $sql = "SELECT * FROM product ORDER BY id";
+        if(isset($_GET['category'])){
+            $cate=$_GET['category'];
+        }
+        else{
+            header("location:index.php");
+        }
+        $sql = "SELECT * FROM product WHERE category=$cate";
         //include($page);
         $result = $conn->query($sql);
         if(!$result){
