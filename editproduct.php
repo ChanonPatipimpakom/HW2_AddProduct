@@ -1,6 +1,26 @@
 <?php
     session_start();
     include("connect.php");
+    if(!isset($_GET['pid']) || $_GET['pid']==""){
+        header("Location:index.php");
+    }
+    else{
+        $pid = $_GET['pid'];
+    }
+
+    $sql = "SELECT * FROM product WHERE id=$pid";
+    $result = $conn->query($sql);
+    if(!$result){
+        echo "Error ".$conn->error;
+    }
+    else{
+        if($result->num_rows>0){
+            $prd = $result->fetch_object();
+        }
+        else{
+            $prd = NULL;
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -27,9 +47,9 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li><a href="index.php">หน้าหลัก</a></li>
+                <li><a href="#">หน้าหลัก</a></li>
                 <li><a href="#">เกี่ยวกับ</a></li>
-                <li><a href="index.php">สินค้าของเรา</a></li>
+                <li><a href="#">สินค้าของเรา</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php
@@ -67,29 +87,32 @@
 </nav>
 <div class="container">
     <div class="row">
-        <form action="savepro.php" class="form-horizontal" method="post" enctype="multipart/form-data">
+        <form action="updatepro.php" class="form-horizontal" method="post" enctype="multipart/form-data">
+        <h2>Edit Product</h2>
+        <img src="image/<?php echo $prd->picture;?>" alt="" class="col-lg-6 col-md-6 col-sm-6 col-xs-6 thumbnail">
+        <div class="col-md-6 col-sm-6 col-xs-6">
             <div class="form-group">
                 <label for="name" class="control-label col-md-3">Name: </label>
                 <div class="col-md-9">
-                    <input type="text" name="txtName" class="form-control">
+                    <input type="text" name="txtName" class="form-control" value="<?php echo $prd->name;?>">
                 </div>
             </div>
             <div class="form-group">
                 <label for="description" class="control-label col-md-3">Description: </label>
                 <div class="col-md-9">
-                    <textarea type="text" name="txtDescrip" class="form-control"></textarea>
+                    <textarea type="text" name="txtDescrip" class="form-control" ><?php echo $prd->description;?></textarea>
                 </div>
             </div>
             <div class="form-group">
                 <label for="price" class="control-label col-md-3">Price: </label>
                 <div class="col-md-9">
-                    <input type="text" name="txtPrice" class="form-control">
+                    <input type="text" name="txtPrice" class="form-control" value="<?php echo $prd->price;?>">
                 </div>
             </div>
             <div class="form-group">
                 <label for="stock" class="control-label col-md-3">Stock: </label>
                 <div class="col-md-9">
-                    <input type="text" name="txtStock" class="form-control">
+                    <input type="text" name="txtStock" class="form-control" value="<?php echo $prd->unitInStock;?>">
                 </div>
             </div>
             <div class="form-group">
@@ -108,10 +131,12 @@
             </div>
             <div class="form-group">
                 <div class="col-md-9 col-md-offset-3">
+                    <input type="hidden" name="hdnProductId" value="<?php echo $prd->id;?>">
                     <button type="submit" class="btn btn-primary">Save</button>
                     <button type="reset" class="btn btn-danger">Reset</button>
                 </div>
             </div>
+        </div>    
         </form>
     </div>
 </div>

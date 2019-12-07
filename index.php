@@ -23,7 +23,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="index.php?menu=com">Markus Shop</a>
+            <a class="navbar-brand" href="index.php">Markus Shop</a>
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
@@ -111,7 +111,9 @@
                     <p><Strong>Price: </Strong><?php echo $prd->price;?><Strong> Bath</Strong></p>
                     <p><Strong>Qty: </Strong><?php echo $prd->unitInStock;?></p>
                     <p>
-                        <a href="#" class="btn btn-danger">Add To Basket</a>
+                        <a href="#" class="btn btn-info">Add To Basket</a>
+                        <a href="editproduct.php?pid=<?php echo $prd->id?>" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
+                        <a href="deleteproduct.php?pid=<?php echo $prd->id?>" class="btn btn-danger linkDelete"><i class="glyphicon glyphicon-trash"></i></a>
                     </p>
                     </div>
                 </div>
@@ -122,5 +124,18 @@
         ?>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        $(".linkDelete").click(function(){
+            if(confirm("confirm delete?")){
+                return true;
+            }else{
+                return false;
+            }
+
+            return confirm("confirm delete")
+        });
+    });
+</script>
 </body>
 </html>
