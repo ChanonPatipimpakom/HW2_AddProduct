@@ -42,6 +42,7 @@
                         <li><a href="showproduct.php?category=3">Clothes</a></li>
                     </ul>
                 </li>
+                <li><a href="searchproduct.php">ค้นหา</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <?php
