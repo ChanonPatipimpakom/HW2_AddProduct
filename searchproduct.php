@@ -148,7 +148,7 @@
             $sql = "SELECT * FROM product WHERE price BETWEEN '$search1' AND '$search2'";      
     ?>
     <div class="container">
-        <h3 style="margin-bottom:20px">ผลการค้นหา: <?php echo "ตั้งแต่ราคา $search1 บาท - $search2 บาท"; ?></h3>
+        <h3 style="margin-bottom:20px">ผลการค้นหา: <?php echo "ตั้งแต่ราคา $search1 บาท ถึง $search2 บาท"; ?></h3>
         <div class="row">
         <?php
         $result = $conn->query($sql);
