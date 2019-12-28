@@ -145,7 +145,7 @@
         else if(isset($_POST['submit-range'])){
             $search1 = $_POST['txtMin'];
             $search2 = $_POST['txtMax'];
-            $sql = "SELECT * FROM product WHERE price BETWEEN '$search1' AND '$search2'";      
+            $sql = "SELECT * FROM product WHERE price BETWEEN '$search1' AND '$search2'";
     ?>
     <div class="container">
         <h3 style="margin-bottom:20px">ผลการค้นหา: <?php echo "ตั้งแต่ราคา $search1 บาท ถึง $search2 บาท"; ?></h3>
