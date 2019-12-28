@@ -84,7 +84,7 @@
             <div class="col-md-12">
                 <form action="" method="post">
                     <div class="col-md-2">
-                    <select name="searchCol" id="" class="btn btn-primary">
+                    <select name="searchCol" id="" class="btn btn-warning">
                         <option value="1">ชื่อสินค้า</option>
                         <option value="2">รายละเอียด</option>
                         <option value="3">ราคาสูงสุด</option>
