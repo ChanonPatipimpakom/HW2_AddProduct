@@ -83,15 +83,18 @@
             <h2>Search Product</h2>
             <div class="col-md-12">
                 <form action="" method="post">
-                    <div class="col-md-10">
-                        <input type="text" class="form-control" name="txtSearch" placeholder="Search">
-                        <button name="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> Go! Search
-                        </button>
+                    <div class="col-md-2">
+                    <select name="searchCol" id="" class="btn btn-primary">
+                        <option value="1">ชื่อสินค้า</option>
+                        <option value="2">รายละเอียด</option>
+                        <option value="3">ราคาสูงสุด</option>
+                    </select>
                     </div>
-                    <div class="col-md-2" >
-                        <input type="text" class="form-control" name="txtMin" placeholder="Min">
-                        <input type="text" class="form-control" name="txtMax" placeholder="Max">
-                        <button name="submit-range" class="btn btn-info btn-block"><i class="glyphicon glyphicon-search"></i> Range!
+                    <div class="col-md-8">
+                        <input type="text" class="form-control" name="txtSearch" placeholder="Search">
+                    </div>
+                    <div>    
+                        <button name="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> Go! Search
                         </button>
                     </div>
                 </form>
@@ -100,55 +103,29 @@
     </div>
     <?php
         if(isset($_POST['submit'])){
+            $searchCol = $_POST['searchCol'];
             $search = $_POST['txtSearch'];
-            $sql = "SELECT * FROM product WHERE name LIKE '%$search%' OR price LIKE '%$search%'";
+            $sql = "SELECT * FROM product";
+            switch($searchCol){
+                case 1: {
+                    $sql.= " WHERE name LIKE '%$search%'";
+                    break;
+                }
+                case 2: {
+                    $sql.= " WHERE description LIKE '%$search%'";
+                    break;
+                } 
+                case 3: {
+                    $sql.= " WHERE price <= '$search'";
+                    break;
+                }
+                default:{
+                    $sql.= " WHERE name LIKE '%$search%'";
+                }
+            }
     ?>
     <div class="container">
         <h3 style="margin-bottom:20px">ผลการค้นหา: <?php echo $_POST['txtSearch']; ?></h3>
-        <div class="row">
-        <?php
-        $result = $conn->query($sql);
-        if(!$result){
-            echo "Error During Retrival";
-        }
-        else{
-            //ดึงข้อมูล
-            while($prd=$result->fetch_object()){
-                $prd->id; //$prd["id]
-        ?>
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                <div class="thumbnail">
-                    <a href="productdetail.php?pid=<?php echo $prd->id;?>">
-                        <img src="image/<?php echo $prd->picture;?>" alt="">
-                    </a>
-                    <div class="caption">
-                    <h3><?php echo $prd->name;?></h3>
-                    <p><?php echo $prd->description;?></p>
-                    <p><Strong>Price: </Strong><?php echo $prd->price;?><Strong> Bath</Strong></p>
-                    <p><Strong>Qty: </Strong><?php echo $prd->unitInStock;?></p>
-                    <p>
-                        <a href="#" class="btn btn-info">Add To Basket</a>
-                        <a href="editproduct.php?pid=<?php echo $prd->id?>" class="btn btn-warning"><i class="glyphicon glyphicon-pencil"></i></a>
-                        <a href="deleteproduct.php?pid=<?php echo $prd->id?>" class="btn btn-danger linkDelete"><i class="glyphicon glyphicon-trash"></i></a>
-                    </p>
-                    </div>
-                </div>
-            </div>
-            <?php
-                }
-            }
-        ?>
-        </div>
-    </div>
-    <?php
-        }
-        else if(isset($_POST['submit-range'])){
-            $search1 = $_POST['txtMin'];
-            $search2 = $_POST['txtMax'];
-            $sql = "SELECT * FROM product WHERE price BETWEEN '$search1' AND '$search2'";
-    ?>
-    <div class="container">
-        <h3 style="margin-bottom:20px">ผลการค้นหา: <?php echo "ตั้งแต่ราคา $search1 บาท ถึง $search2 บาท"; ?></h3>
         <div class="row">
         <?php
         $result = $conn->query($sql);
