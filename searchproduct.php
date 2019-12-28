@@ -12,6 +12,23 @@
     <script src="js/jquery-3.4.1.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
     <title>Jaidee Shop</title>
+    <script>
+    $(document).ready(function () {
+        $("#search2").hide();
+        $("#search3").hide();
+        $("select[name=searchCol]").click(function () {
+            if ($(this).val() == "3") {
+                $("#search3").show();
+                $("#search2").show();
+                $("#search1").hide();
+            } else {
+                $("#search3").hide();
+                $("#search2").hide();
+                $("#search1").show();
+            }
+        });
+    });
+    </script>
 </head>
 <body>
     <nav class="navbar-default">
@@ -84,17 +101,24 @@
             <div class="col-md-12">
                 <form action="" method="post">
                     <div class="col-md-2">
-                    <select name="searchCol" id="" class="btn btn-warning">
+                    <select name="searchCol" id="" class="btn btn-primary">
+                        <option value="#">--รายการค้นหาสินค้า--</option>
                         <option value="1">ชื่อสินค้า</option>
                         <option value="2">รายละเอียด</option>
-                        <option value="3">ราคาสูงสุด</option>
+                        <option value="3">ราคา</option>
                     </select>
                     </div>
                     <div class="col-md-8">
-                        <input type="text" class="form-control" name="txtSearch" placeholder="Search">
+                        <input type="text" id="search1" class="form-control" name="txtSearch" placeholder="Search">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="search2" class="form-control" name="txtMin" placeholder="Min">
+                    </div>
+                    <div class="col-md-4">
+                        <input type="text" id="search3" class="form-control" name="txtMax" placeholder="Max">
                     </div>
                     <div>    
-                        <button name="submit" class="btn btn-primary"><i class="glyphicon glyphicon-search"></i> Go! Search
+                        <button name="submit" class="btn btn-success"><i class="glyphicon glyphicon-search"></i> Go! Search
                         </button>
                     </div>
                 </form>
@@ -105,27 +129,33 @@
         if(isset($_POST['submit'])){
             $searchCol = $_POST['searchCol'];
             $search = $_POST['txtSearch'];
+            $min = $_POST['txtMin'];
+            $max = $_POST['txtMax'];
             $sql = "SELECT * FROM product";
             switch($searchCol){
                 case 1: {
                     $sql.= " WHERE name LIKE '%$search%'";
+                    $report = "ผลการค้นหา ชื่อสินค้า <b>$search</b>";
                     break;
                 }
                 case 2: {
                     $sql.= " WHERE description LIKE '%$search%'";
+                    $report = "ผลการค้นหา รายละเอียดสินค้า <b>$search</b>";
                     break;
                 } 
                 case 3: {
-                    $sql.= " WHERE price <= '$search'";
+                    $sql.= " WHERE price BETWEEN '$min' AND '$max'";
+                    $report = "ผลการค้นหา ราคาตั้งแต่ <b>$min - $max</b> บาท";
                     break;
                 }
                 default:{
                     $sql.= " WHERE name LIKE '%$search%'";
+                    $report = "ผลการค้นหา ชื่อสินค้า <b>$search</b>";
                 }
             }
     ?>
     <div class="container">
-        <h3 style="margin-bottom:20px">ผลการค้นหา: <?php echo $_POST['txtSearch']; ?></h3>
+        <h3 style="margin-bottom:20px"><?php echo $report?> </h3>
         <div class="row">
         <?php
         $result = $conn->query($sql);
@@ -164,5 +194,24 @@
     <?php
         }
     ?>
+    <!--<script>
+    $(function () {
+        $("input[name=btnPassport]").click(function () {
+            if ($(this).val() == "Yes") {
+                $("#dvPassport").show();
+            } else {
+                $("#dvPassport").hide();
+            }
+        });
+    });
+    </script>
+    <span>Do you have Passport?</span>
+    <input type="button" value="Yes" name = "btnPassport" />
+    <input type="button" value="No" name = "btnPassport" />
+    <hr />
+    <div id="dvPassport" style="display: none">
+        Passport Number:
+        <input type="text" id="txtPassportNumber" />
+    </div>-->
 </body>
 </html>
