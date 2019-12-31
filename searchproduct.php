@@ -102,7 +102,7 @@
                 <form action="" method="post">
                     <div class="col-md-2">
                     <select name="searchCol" id="" class="btn btn-primary">
-                        <option value="#">--รายการค้นหาสินค้า--</option>
+                        <option value="#">-- หมวดค้นหาสินค้า --</option>
                         <option value="1">ชื่อสินค้า</option>
                         <option value="2">รายละเอียด</option>
                         <option value="3">ราคา</option>
