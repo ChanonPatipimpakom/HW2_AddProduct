@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>คิดเงิน</title>
     <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/loadingoverlay.min.js"></script>
 </head>
 <body>
     <h1>คิดราคาสินค้า</h1>
@@ -40,6 +41,15 @@
                         pid: $("#pid").val()
                     },
                     dataType:"json",
+                    timeout:5000,
+                    beforeSend:function(){
+                        $.LoadingOverlay('show',{
+                            image:'image/clock-loading.gif',
+                            background:'rgba(200,200,200,0.6)',
+                            text:'Searching...',
+                            textResizeFactor:0.15
+                        });
+                    },
                     success:(res)=>{
                         //console.log(res);
                         $("#pname").val(res.name);
@@ -47,7 +57,8 @@
                         var qty = ($("#qty").val())*1;
                         var total = res.price * qty;
                         $("#total").val(total);
-                    }
+                    },
+                    complete:()=> $.LoadingOverlay('hide')
                 });
                 return false;
             });
