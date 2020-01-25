@@ -24,6 +24,7 @@
             <td>UnitStock</td>
             <td>Category</td>
             <td>Delete</td>
+            <td>Edit</td>
         <?php
         include("connect.php");
         $sql = "SELECT * FROM product ORDER BY id";
@@ -36,14 +37,17 @@
             while($prd=$result->fetch_object()){
         ?>
         <tr id="row-<?php echo $prd->id;?>">
-            <td><?php echo $prd->id;?></td>
-            <td><?php echo $prd->name;?></td>
-            <td><?php echo $prd->description;?></td>
-            <td><?php echo $prd->price;?></td>
-            <td><?php echo $prd->unitInStock;?></td>
-            <td><?php echo $prd->category;?></td>
+            <td id="pid-<?php echo $prd->id ?>"><?php echo $prd->id;?></td>
+            <td id="pname-<?php echo $prd->id ?>"><?php echo $prd->name;?></td>
+            <td id="pdesc-<?php echo $prd->id ?>"><?php echo $prd->description;?></td>
+            <td  id="pprice-<?php echo $prd->id ?>"><?php echo $prd->price;?></td>
+            <td id="pstock-<?php echo $prd->id ?>"><?php echo $prd->unitInStock;?></td>
+            <td id="pcate-<?php echo $prd->id ?>"><?php echo $prd->category;?></td>
             <td>
                 <a href="#" class="del" data-id="<?php echo $prd->id;?>">[Del]</a>
+            </td>
+            <td>
+                <a href="#" class="edit" data-id="<?php echo $prd->id;?>">[Edit]</a>
             </td>
         </tr>
         <?php
@@ -61,11 +65,30 @@
         <p>Stock: <input type="text" name="txtstock" id="txtstock"></p>
         <p>Category: <input type="text" name="txtcate" id="txtcate"></p>
         <p>
-            <button type="submit">OK</button>
+            <input type="hidden" name="hdnPid" id="hdnPid" value="">
+            <button type="reset">Reset</button>
+            <button type="submit">Submit</button>
         </p>
     </form>
 <script>
 $(document).ready(function(){
+    $(".edit").click(function(){
+        var pid = $(this).data("id");
+        var pname = $("#pname-"+pid).text();
+        var pdesc = $("#pdesc-"+pid).text();
+        var pprice = $("#pprice-"+pid).text();
+        var pstock = $("#pstock-"+pid).text();
+        var pcate = $("#pcate-"+pid).text();
+        $("#txtname").val(pname);
+        $("#txtdesc").val(pdesc);
+        $("#txtprice").val(pprice);
+        $("#txtstock").val(pstock);
+        $("#txtcate").val(pcate);
+        $("#hdnPid").val(pid)
+    });
+    $("button[type=reset]").click(function(){
+        $("#hdnPid").val('')
+    });
     $(".del").click(function(){
         var pid = $(this).data("id");
         //alert($(this).data("id"));
@@ -74,16 +97,14 @@ $(document).ready(function(){
             type:"get",
             data:{ 'pid' : pid},
             datatype:"text",
-
             beforeSend:function(){
                 $.LoadingOverlay('show',{
-                    image:'image/clock-loading.gif',
+                    image:'image/loading.gif',
                     background:'rgba(200,200,200,0.6)',
                     text:'Searching...',
                     textResizeFactor:0.15
                 });
             },
-
             success:(msg)=>{
                 alert(msg);
                 //find to remove
@@ -94,41 +115,88 @@ $(document).ready(function(){
         });
     });
     $("#frmProduct").submit(function(){
-        $.ajax({
-            url:"insertbyajax.php",
-            type:"post",
-            data: $(this).serializeArray(),
-            dataType: "json",
-            success:(res)=>{
-                if(res.id!=-1){
-                    alert(res.msg);
-                    var pname = $("#txtname").val();
-                    var desc = $("#txtdesc").val();
-                    var price = $("#txtprice").val();
-                    var stock = $("#txtstock").val();
-                    var category = $("#txtcate").val();
-                    var link =  '<a href="#" class="lnkDel" data-id="'+res.id+'">[Del]</a>';
-                    var tr = "<tr>";
-                        tr = tr + "<td>" + res.id + "</td>";
-                        tr = tr + "<td>" + pname + "</td>";
-                        tr = tr + "<td>" + desc + "</td>";
-                        tr = tr + "<td>" + price + "</td>";
-                        tr = tr + "<td>" + stock + "</td>";
-                        tr = tr + "<td>" + category + "</td>";
-                        tr = tr + "<td>" + link + "</td>";
-                    tr = tr + "</tr>";
-                    $("#tbpro").append(tr);
-                    $("#txtname").val('');
-                    $("#txtdesc").val('');
-                    $("#txtprice").val('');
-                    $("#txtstock").val('');
-                    $("#txtcate").val('');
+        var pid = $("#hdnPid").val();
+        if(pid!=''){
+            //update
+            $.ajax({
+                url: "updatebyajax.php",
+                type: "post",
+                data: $(this).serializeArray(),
+                dataType: "json",
+                success:(res)=>{
+                    if(res.id!=-1){
+                        alert(res.msg);
+                        //update row
+                        $("#pname-"+res.id).text($("#txtname").val());
+                        $("#pdesc-"+res.id).text($("#txtdesc").val());
+                        $("#pprice-"+res.id).text($("#txtprice").val());
+                        $("#pstock-"+res.id).text($("#txtstock").val());
+                        $("#pcate-"+res.id).text($("#txtcate").val());
+                        $("#txtname").val('');
+                        $("#txtdesc").val('');
+                        $("#txtprice").val('');
+                        $("#txtstock").val('');
+                        $("#txtcate").val('');
+                    }
+                },
+                beforeSend:function(){
+                    $.LoadingOverlay('show',{
+                        image:'image/loading.gif',
+                        background:'rgba(200,200,200,0.6)',
+                        text:'Searching...',
+                        textResizeFactor:0.15
+                    });
+                },
+                complete:()=> $.LoadingOverlay('hide'),
+            });
+        }
+        else{
+            //insert
+            $.ajax({
+                url:"insertbyajax.php",
+                type:"post",
+                data: $(this).serializeArray(),
+                dataType: "json",
+                beforeSend:function(){
+                    $.LoadingOverlay('show',{
+                        image:'image/loading.gif',
+                        background:'rgba(200,200,200,0.6)',
+                        text:'Searching...',
+                        textResizeFactor:0.15
+                    });
+                },
+                complete:()=> $.LoadingOverlay('hide'),
+                success:(res)=>{
+                    if(res.id!=-1){
+                        alert(res.msg);
+                        var pname = $("#txtname").val();
+                        var desc = $("#txtdesc").val();
+                        var price = $("#txtprice").val();
+                        var stock = $("#txtstock").val();
+                        var category = $("#txtcate").val();
+                        var link =  '<a href="#" class="lnkDel" data-id="'+res.id+'">[Del]</a>';
+                        var tr = "<tr>";
+                            tr = tr + "<td>" + res.id + "</td>";
+                            tr = tr + "<td>" + pname + "</td>";
+                            tr = tr + "<td>" + desc + "</td>";
+                            tr = tr + "<td>" + price + "</td>";
+                            tr = tr + "<td>" + stock + "</td>";
+                            tr = tr + "<td>" + category + "</td>";
+                            tr = tr + "<td>" + link + "</td>";
+                        tr = tr + "</tr>";
+                        $("#tbpro").append(tr);
+                        $("#txtname").val('');
+                        $("#txtdesc").val('');
+                        $("#txtprice").val('');
+                        $("#txtstock").val('');
+                        $("#txtcate").val('');
+                    }
+                    else{
+                        alert(res.msg);
+                    }
                 }
-                else{
-                    alert("Error Not Complete");
-                }
-            }
-        });
+            });
+        }
         return false;
     });
 });
