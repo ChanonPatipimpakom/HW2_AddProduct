@@ -13,7 +13,7 @@
 
     $res = array();
     if(!$result){
-        $id=-1;
+        $id =-1;
         $msg = "Error on insert".$conn->error; 
     }
     else{
