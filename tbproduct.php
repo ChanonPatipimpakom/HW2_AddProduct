@@ -124,6 +124,9 @@ $(document).ready(function(){
                     $("#txtstock").val('');
                     $("#txtcate").val('');
                 }
+                else{
+                    alert("Error Not Complete");
+                }
             }
         });
         return false;

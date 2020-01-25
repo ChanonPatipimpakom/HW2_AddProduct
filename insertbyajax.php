@@ -1,5 +1,4 @@
 <?php
-    session_start();
     include("connect.php");
     $name = $_POST['txtname'];
     $desc = $_POST['txtdesc'];
