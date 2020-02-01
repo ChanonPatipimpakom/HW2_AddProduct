@@ -11,6 +11,9 @@
 <body>
     <h1>คิดราคาสินค้า</h1>
     <form action="#" method="post" id="frmProduct">
+        <div style=" width:180px; height:200px; margin-bottom:6%">
+            <img src="image/dummy.jpg" id="imgPic" alt="" style="width:100%;border:2px dashed black;">
+        </div>
         <p>
             รหัสสินค้า:<input type="text" name="pid" id="pid">
         </p>
@@ -57,10 +60,14 @@
                         var qty = ($("#qty").val())*1;
                         var total = res.price * qty;
                         $("#total").val(total);
+                        $("#imgPic").attr('src',"image/"+res.picture);
                     },
                     complete:()=> $.LoadingOverlay('hide')
                 });
                 return false;
+            });
+            $("button[type=reset]").click(()=>{
+                $("#imgPic").attr('src',"image/dummy.jpg");
             });
         });
     </script>
