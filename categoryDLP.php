@@ -37,13 +37,40 @@
                 },
                 beforeSend:function(){
                     $.LoadingOverlay('show',{
-                        image:'image/loading.gif',
+                        image:'image/blueloading.gif',
                         background:'rgba(200,200,200,0.6)',
                         text:'Searching...',
                         textResizeFactor:0.15
                     });
                 },
                 complete:()=> $.LoadingOverlay('hide')
+            });
+            $("#ddlCategory").change(function(){
+                var parent = $(this).val();
+                $.ajax({
+                    url:"loadingcategory.php",
+                    data:{ "parent" : parent }, //paerntID
+                    type:"get",
+                    dataType:"json",
+                    success:(res)=>{
+                        $("#ddlSubCategory").empty(); //clear subcategory
+                        $("#ddlSubCategory").append("<option>--เลือก--</option>");
+                        $(res).each((index,data)=>{
+                            var option = $("<option/>");
+                            option.attr("value",data.id).text(data.name); //id name จากฐานข้อมูล
+                            $("#ddlSubCategory").append(option); //ต่อท้ายข้อมูลของ Dropdown
+                        });
+                    },
+                    beforeSend:function(){
+                        $.LoadingOverlay('show',{
+                            image:'image/load.gif',
+                            background:'rgba(200,200,200,0.6)',
+                            text:'Searching...',
+                            textResizeFactor:0.15
+                        });
+                    },
+                    complete:()=> $.LoadingOverlay('hide')
+                });
             });
         });
     </script>
